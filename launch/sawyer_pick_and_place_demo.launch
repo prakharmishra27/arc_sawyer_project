@@ -6,14 +6,13 @@
     <arg name="electric_gripper" value="true"/>    
   </include>
 
-  <include file="$(find sawyer_gazebo)/kinect/model.sdf">
-   
-  </include>
+  
   <!-- Start the joint trajectory controller -->
-  <!-- <node pkg="intera_interface" type="joint_trajectory_action_server.py" name="joint_trajectory_action_server" />
+  <node pkg="intera_interface" type="joint_trajectory_action_server.py" name="joint_trajectory_action_server" />
 
    <include file="$(find sawyer_moveit_config)/launch/sawyer_moveit.launch">
-   </include> -->
+    <arg name="electric_gripper" value="true"/> 
+   </include>
  
   <!-- Start the Sawyer pick and place demo -->
   <!-- <node pkg="sawyer_project" type="pick_and_place.py" name="pick_and_place" /> -->

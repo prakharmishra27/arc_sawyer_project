@@ -2,7 +2,7 @@ import sys
 import copy
 from tabnanny import check
 import numpy as np
-
+import perception
 from matplotlib import transforms
 import rospy
 import rospkg
@@ -17,6 +17,28 @@ from tf.transformations import quaternion_from_euler
 import intera_interface
 from intera_interface import CHECK_VERSION
 from rospy import Time
+
+from geometry_msgs.msg import (
+	
+	PoseStamped
+)
+
+
+def all_close(goal, actual, tolerance):
+
+	all_equal = True
+	if type(goal) is list:
+		for index in range(len(goal)):
+			if abs(actual[index] - goal[index]) > tolerance:
+				return False
+
+	elif type(goal) is geometry_msgs.msg.PoseStamped:
+		return all_close(goal.pose, actual.pose, tolerance)
+
+	elif type(goal) is geometry_msgs.msg.Pose:
+		return all_close(pose_to_list(goal), pose_to_list(actual), tolerance)
+
+	return True
 
 class SawyerManipulation():
 
@@ -39,23 +61,6 @@ class SawyerManipulation():
 
 		group_names = self.robot.get_group_names()
 		print("============ Robot Groups:", self.robot.get_group_names())
-
-
-	def all_close(goal, actual, tolerance):
-
-		all_equal = True
-		if type(goal) is list:
-			for index in range(len(goal)):
-				if abs(actual[index] - goal[index]) > tolerance:
-					return False
-
-		elif type(goal) is geometry_msgs.msg.PoseStamped:
-			return all_close(goal.pose, actual.pose, tolerance)
-
-		elif type(goal) is geometry_msgs.msg.Pose:
-			return all_close(pose_to_list(goal), pose_to_list(actual), tolerance)
-
-		return True
 
 
 	def gripper_open(limb= True):
@@ -81,7 +86,7 @@ class SawyerManipulation():
 		rospy.sleep(3)
 		gripper.close()
 
-
+	
 
 	def go_to_pose_goal(self, target_pose):
 

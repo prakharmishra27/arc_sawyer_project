@@ -18,13 +18,13 @@
     <!-- Rectified image -->
     <node name="rectify_image" pkg="image_proc" type="image_proc" output="screen">
         <remap from="image_raw" to="/camera/color/image_raw" />
-        <remap from="camera_info" to="/camera/camera_info" />
+        <remap from="camera_info" to="/camera/color/camera_info" />
     </node>
 
     <!-- Start aruco tracker -->
     <node name="aruco_detect" pkg="aruco_detect" type="aruco_detect" output="screen">
         <remap from="camera" to="/image_rect_color" />
-        <remap from="camera_info" to="/camera/camera_info" />
+        <remap from="camera_info" to="/camera/color/camera_info" />
         <param name="fiducial_len" value="0.05"/>
         <param name="dictionary" value="3"/>
         <param name="publish_images" value="true" />
